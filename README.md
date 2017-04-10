@@ -7,3 +7,5 @@ This is a progress bar for C# Console.
 + 调用`update`方法更新进度
 
 效果展示：
+
+![](https://raw.githubusercontent.com/jingedawang/ProgressBar/master/progressbar.png)
