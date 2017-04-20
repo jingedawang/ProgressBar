@@ -1,6 +1,5 @@
+D:\c++Projects\ProgressBar\ProgressBar\bin\Debug\ProgressBar.pdb
+D:\c++Projects\ProgressBar\ProgressBar\obj\Debug\ProgressBar.pdb
 D:\c++Projects\ProgressBar\ProgressBar\bin\Debug\ProgressBar.exe.config
 D:\c++Projects\ProgressBar\ProgressBar\bin\Debug\ProgressBar.exe
-D:\c++Projects\ProgressBar\ProgressBar\bin\Debug\ProgressBar.pdb
-D:\c++Projects\ProgressBar\ProgressBar\obj\Debug\ProgressBar.csprojResolveAssemblyReference.cache
 D:\c++Projects\ProgressBar\ProgressBar\obj\Debug\ProgressBar.exe
-D:\c++Projects\ProgressBar\ProgressBar\obj\Debug\ProgressBar.pdb

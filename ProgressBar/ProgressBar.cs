@@ -6,30 +6,70 @@ using System.Threading.Tasks;
 
 namespace ProgressBar
 {
+    /// <summary>
+    /// 控制台进度条
+    /// 使用方式：
+    /// <code>
+    ///     ProgressBar bar = new ProgressBar();
+    ///     bar.show();
+    ///     bar.update(0.2);
+    /// </code>
+    /// </summary>
     class ProgressBar
     {
-        private bool running = false;
+        private bool enable = false;
         private int cursorTop = 0;
         private string title;
         private int cursorLeft = 0;
+        private double percent;
 
+        /// <summary>
+        /// 创建默认标题的进度条
+        /// </summary>
         public ProgressBar() : this("Processing")
         {
             
         }
 
+        /// <summary>
+        /// 创建指定标题的进度条
+        /// </summary>
+        /// <param name="title"></param>
         public ProgressBar(string title)
         {
             this.title = title;
         }
 
+        /// <summary>
+        /// 显示进度条
+        /// </summary>
+        public void show()
+        {
+            if (enable == false)
+            {
+                enable = true;
+                initDraw();
+            }
+            update(0.0);
+        }
+
+        /// <summary>
+        /// 更新进度条。请确保已经调用过show，否则无效
+        /// </summary>
+        /// <param name="percent"></param>
         public void update(double percent)
         {
-            if (!running)
+            if (enable == false)
             {
-                initDraw();
-                running = true;
+                return;
             }
+            //更新量不到1%，不必重画进度条
+            if ((int) (percent * 100) == (int) (this.percent * 100))
+            {
+                return;
+            }
+            int originCursorTop = Console.CursorTop;
+            int originCursorLeft = Console.CursorLeft;
 
             int width = Console.WindowWidth;
 
@@ -71,8 +111,11 @@ namespace ProgressBar
             Console.SetCursorPosition(0, cursorTop + 2);
             Console.Write("{0}%", (int)Math.Round(percent * 100));
             Console.ForegroundColor = colorFore;    //恢复输出颜色
+            Console.CursorTop = originCursorTop;    //恢复光标位置
+            Console.CursorLeft = originCursorLeft;
 
             cursorLeft = newCursorLeft;
+            this.percent = percent;
         }
 
         private void initDraw()
