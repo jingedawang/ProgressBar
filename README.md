@@ -14,6 +14,12 @@ ProgressBar progressBar = new ProgressBar(100);
 progressBar.Show();
 progressBar.Update(1);
 ```
+**Increase mode**
+```
+ProgressBar progressBar = new ProgressBar(100);
+progressBar.Show();
+progressBar.UpdateOnce();
+```
 
 ## Example
 
