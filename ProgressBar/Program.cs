@@ -8,12 +8,12 @@ namespace ProgressBar
         static void Main(string[] args)
         {
             ProgressBar progressBar = new ProgressBar(100);
-            progressBar.show();
+            progressBar.Show();
             Console.WriteLine("Press any key to start the progress bar...");
             Console.ReadKey(true);
             for (int i = 1; i <= 100; i++)
             {
-                progressBar.update(i);
+                progressBar.Update(i);
                 Thread.Sleep(50);
             }
             

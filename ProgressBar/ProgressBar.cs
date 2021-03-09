@@ -8,9 +8,9 @@ namespace ProgressBar
     /// <remarks>
     /// Here is the usage of this class:
     /// <code>
-    ///     ProgressBar bar = new ProgressBar();
-    ///     bar.show();
-    ///     bar.update(0.01);
+    ///     ProgressBar progressBar = new ProgressBar();
+    ///     progressBar.Show();
+    ///     progressBar.Update(0.01);
     /// </code>
     /// </remarks>
     public class ProgressBar
@@ -37,7 +37,7 @@ namespace ProgressBar
         /// <summary>
         /// Show the progress bar.
         /// </summary>
-        public void show()
+        public void Show()
         {
             if (enabled == false)
             {
@@ -51,16 +51,16 @@ namespace ProgressBar
         /// Update the progress bar by count.
         /// </summary>
         /// <param name="count">The processed item count.</param>
-        public void update(int count)
+        public void Update(int count)
         {
-            update(count * 1.0 / total);
+            Update(count * 1.0 / total);
         }
 
         /// <summary>
         /// Update the progress by percent.
         /// </summary>
         /// <param name="percent">The processed percentage.</param>
-        public void update(double percent)
+        public void Update(double percent)
         {
             if (enabled == false)
             {
