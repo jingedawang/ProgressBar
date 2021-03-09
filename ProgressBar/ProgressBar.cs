@@ -1,145 +1,120 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 
 namespace ProgressBar
 {
     /// <summary>
-    /// 控制台进度条
-    /// 使用方式：
+    /// A simple console progress bar.
+    /// </summary>
+    /// <remarks>
+    /// Here is the usage of this class:
     /// <code>
     ///     ProgressBar bar = new ProgressBar();
     ///     bar.show();
-    ///     bar.update(0.2);
+    ///     bar.update(0.01);
     /// </code>
-    /// </summary>
-    class ProgressBar
+    /// </remarks>
+    public class ProgressBar
     {
-        private bool enable = false;
-        private int cursorTop = 0;
-        private string title;
-        private int cursorLeft = 0;
-        private double percent;
-
         /// <summary>
-        /// 创建默认标题的进度条
+        /// Create a default progress bar.
         /// </summary>
-        public ProgressBar() : this("Processing")
+        /// <remarks>
+        /// The progress bar created this way can only updated by percent.
+        /// </remarks>
+        public ProgressBar()
         {
-            
         }
 
         /// <summary>
-        /// 创建指定标题的进度条
+        /// Create a progress bar with specified total number.
         /// </summary>
-        /// <param name="title"></param>
-        public ProgressBar(string title)
+        /// <param name="total">Total number which indicates the 100% progress.</param>
+        public ProgressBar(int total)
         {
-            this.title = title;
+            this.total = total;
         }
 
         /// <summary>
-        /// 显示进度条
+        /// Show the progress bar.
         /// </summary>
         public void show()
         {
-            if (enable == false)
+            if (enabled == false)
             {
-                enable = true;
-                initDraw();
+                enabled = true;
+                cursorTop = Console.CursorTop;
+                Console.WriteLine("0%");
             }
-            update(0.0);
         }
 
         /// <summary>
-        /// 更新进度条。请确保已经调用过show，否则无效
+        /// Update the progress bar by count.
         /// </summary>
-        /// <param name="percent"></param>
+        /// <param name="count">The processed item count.</param>
+        public void update(int count)
+        {
+            update(count * 1.0 / total);
+        }
+
+        /// <summary>
+        /// Update the progress by percent.
+        /// </summary>
+        /// <param name="percent">The processed percentage.</param>
         public void update(double percent)
         {
-            if (enable == false)
+            if (enabled == false)
             {
                 return;
             }
-            //更新量不到1%，不必重画进度条
-            if ((int) (percent * 100) == (int) (this.percent * 100))
+            // Update only when percentage reaches a higher integer.
+            if (Math.Round(percent * 100) <= this.percentage)
             {
                 return;
             }
             int originCursorTop = Console.CursorTop;
             int originCursorLeft = Console.CursorLeft;
+            ConsoleColor originBackgroundColor = Console.BackgroundColor;
+            ConsoleColor originForegroundColor = Console.ForegroundColor;
 
-            int width = Console.WindowWidth;
+            int width = Console.WindowWidth - textWidth;
+            percentage = (int)Math.Round(percent * 100);
 
-            ConsoleColor colorBack = Console.BackgroundColor;
-            ConsoleColor colorFore = Console.ForegroundColor;
+            // Write percentage text.
+            Console.SetCursorPosition(0, cursorTop);
+            Console.Write(new string(' ', textWidth));
+            Console.SetCursorPosition(0, cursorTop);
+            Console.Write($"{percentage}%");
 
-            //绘制进度条进度
-            Console.BackgroundColor = ConsoleColor.Yellow; //设置进度条颜色
-
-            int newCursorLeft = (int)((percent * width));
-            if (newCursorLeft < cursorLeft)
+            // Print progress bar.
+            Console.BackgroundColor = originForegroundColor;
+            int newCursorLeft = (int)Math.Round(percent * width);
+            for (int cursor = cursorLeft; cursor < newCursorLeft; cursor++)
             {
-                Console.BackgroundColor = ConsoleColor.DarkCyan;
-                for (int cursor = newCursorLeft + 1; cursor <= cursorLeft; cursor++)
-                {
-                    if (cursor > 0)
-                    {
-                        Console.SetCursorPosition(cursor - 1, cursorTop + 1);
-                        Console.Write(" ");
-                    }
-                }
-                Console.BackgroundColor = ConsoleColor.Yellow;
+                Console.SetCursorPosition(textWidth + cursor, cursorTop);
+                Console.Write(' ');
             }
-            else
-            {
-                for (int cursor = cursorLeft; cursor <= newCursorLeft; cursor++)
-                {
-                    if (cursor > 0)
-                    {
-                        Console.SetCursorPosition(cursor - 1, cursorTop + 1);
-                        Console.Write(" ");
-                    }
-                }
-            }
-            Console.BackgroundColor = colorBack;    //恢复输出颜色
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.SetCursorPosition(0, cursorTop + 2);
-            Console.Write("          ");
-            Console.SetCursorPosition(0, cursorTop + 2);
-            Console.Write("{0}%", (int)Math.Round(percent * 100));
-            Console.ForegroundColor = colorFore;    //恢复输出颜色
-            Console.CursorTop = originCursorTop;    //恢复光标位置
+
+            // Restore original color and cursor position.
+            Console.BackgroundColor = originBackgroundColor;
+            Console.ForegroundColor = originForegroundColor;
+            Console.CursorTop = originCursorTop;
             Console.CursorLeft = originCursorLeft;
 
+            // Record the drawn position.
             cursorLeft = newCursorLeft;
-            this.percent = percent;
         }
 
-        private void initDraw()
-        {
-            ConsoleColor colorBack = Console.BackgroundColor;
-            ConsoleColor colorFore = Console.ForegroundColor;
-
-            cursorTop = Console.CursorTop;
-
-            // 第一行信息 
-            Console.WriteLine("********************  " + title + "  ********************");
-
-            // 第二行绘制进度条背景 
-            Console.BackgroundColor = ConsoleColor.DarkCyan;
-            int width = Console.WindowWidth;
-            for (int i = 0; i < width; i++)
-            {
-                Console.Write(" ");
-            }
-            Console.BackgroundColor = colorBack;
-
-            // 第三行输出进度 
-            Console.WriteLine("0%");
-        }
-
+        // A flag used for preventing multiple initialization.
+        private bool enabled = false;
+        // The row index of the progress bar.
+        private int cursorTop = 0;
+        // The column index of the progress bar.
+        private int cursorLeft = 0;
+        // The percentage of the progress.
+        private int percentage;
+        // Total item number that to be processed.
+        private int total = 0;
+        // The text width on the left side of the progress bar.
+        private const int textWidth = 6;
     }
 }
