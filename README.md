@@ -4,15 +4,15 @@ This is a simple implementation of progress bar in C# Console Application.
 ## Usage
 **Percentage mode**
 ```
-ProgressBar bar = new ProgressBar();
-bar.show();
-bar.update(0.01);
+ProgressBar progressBar = new ProgressBar();
+progressBar.Show();
+progressBar.Update(0.01);
 ```
 **Item count mode**
 ```
-ProgressBar bar = new ProgressBar(100);
-bar.show();
-bar.update(1);
+ProgressBar progressBar = new ProgressBar(100);
+progressBar.Show();
+progressBar.Update(1);
 ```
 
 ## Example
