@@ -5,14 +5,27 @@ namespace ProgressBar
     /// <summary>
     /// A simple console progress bar.
     /// </summary>
-    /// <remarks>
-    /// Here is the usage of this class:
+    /// <example>
+    /// There are three modes can be used.
+    /// Mode 1: Percentage mode
     /// <code>
     ///     ProgressBar progressBar = new ProgressBar();
     ///     progressBar.Show();
     ///     progressBar.Update(0.01);
     /// </code>
-    /// </remarks>
+    /// Mode 2: Item count mode
+    /// <code>
+    ///     ProgressBar progressBar = new ProgressBar(100);
+    ///     progressBar.Show();
+    ///     progressBar.Update(1);
+    /// </code>
+    /// Mode 3: Increase mode
+    /// <code>
+    ///     ProgressBar progressBar = new ProgressBar(100);
+    ///     progressBar.Show();
+    ///     progressBar.UpdateOnce();
+    /// </code>
+    /// </example>
     public class ProgressBar
     {
         /// <summary>
@@ -48,11 +61,20 @@ namespace ProgressBar
         }
 
         /// <summary>
+        /// Update the progress by one item.
+        /// </summary>
+        public void UpdateOnce()
+        {
+            Update(++count * 1.0 / total);
+        }
+
+        /// <summary>
         /// Update the progress bar by count.
         /// </summary>
         /// <param name="count">The processed item count.</param>
         public void Update(int count)
         {
+            this.count = count;
             Update(count * 1.0 / total);
         }
 
@@ -111,7 +133,9 @@ namespace ProgressBar
         // The column index of the progress bar.
         private int cursorLeft = 0;
         // The percentage of the progress.
-        private int percentage;
+        private int percentage = 0;
+        // The current count of the progress.
+        private int count = 0;
         // Total item number that to be processed.
         private int total = 0;
         // The text width on the left side of the progress bar.
