@@ -1,11 +1,20 @@
 # ProgressBar
-This is a progress bar for C# Console.
+This is a simple implementation of progress bar in C# Console Application.
 
-用于C#控制台的滚动条。
-使用方式：
-+ 创建ProgressBar对象
-+ 调用`update`方法更新进度
+## Usage
+**Percentage mode**
+```
+ProgressBar bar = new ProgressBar();
+bar.show();
+bar.update(0.01);
+```
+**Item count mode**
+```
+ProgressBar bar = new ProgressBar(100);
+bar.show();
+bar.update(1);
+```
 
-效果展示：
+## Example
 
-![](https://raw.githubusercontent.com/jingedawang/ProgressBar/master/progressbar.png)
+![ProgressBar](https://user-images.githubusercontent.com/7996256/110447591-59ff9200-80fb-11eb-89a3-998c1c4c7974.gif)
